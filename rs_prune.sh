@@ -57,17 +57,17 @@ echo "Collecting hashes of all .vmdk files."
 # wile-loop inserted for handling filenames with spaces, exclude delta files (snapshots), faster search (thanks to wowbagger)
 find $1/ -path $1/data -prune -o -name *.vmdk | grep -v '\delta.vmdk$' | grep -v '\sesparse.vmdk$' | grep -v $1/data | while read LINE; do cat "$LINE" ; done | grep -o '^\b[0-9a-f]\{40\}\+\b' > $hashes
 echo "Sorting hashes and removing duplicates."
-sort $hashes | awk '!a[$0]++' > $hashes_sorted
-hashes_count=`cat $hashes_sorted | wc -l`
+sort $hashes | uniq > $hashes_sorted
+hashes_count=`wc -l $hashes_sorted`
 echo "Hashes in vmdks: $hashes_count"
 
 echo "Generating list of files in ./data."
-# find $1/data -type f -exec basename {} \; > $files
-ls -1R $1/data | grep -o '\b[0-9a-f]\{40\}\+\b' > $files
+find $1/data -type f -exec basename {} \; > $files
+#ls -1R $1/data | grep -o '\b[0-9a-f]\{40\}\+\b' > $files
 
 echo "Sorting list of files."
 sort $files > $files_sorted
-files_count=`cat $files_sorted | wc -l`
+files_count=`wc -l $files_sorted`
 
 echo "Files: $files_count"
 
