@@ -5,6 +5,12 @@ Script to check & prune a xsitools/xsibackup area.
 ### Prerequisites
 
 XSIBackup with xsitools deduplicated backup area.
+XSIBackups are taken with these options that control the backup directory naming:
+```
+--backup-point="<your backup location>/$(date +%Y%m'00000000')"
+```
+This generates backup directory structures such as:
+
 
 ### Installing
 
